@@ -9,9 +9,9 @@ import Footer from './Footer/Footer';
 class App extends Component {
     state = {
         tasks: [
-            {id: 1, text: 'Помыть посуду', timer: 'blabla'},
-            {id: 2, text: 'Закончить практику', timer: 'blabla'},
-            {id: 3, text: 'Убрать листья', timer: 'blabla'},
+            {id: 1, text: 'Drink coffee', timer: 'blabla'},
+            {id: 2, text: 'Finish code', timer: 'blabla'},
+            {id: 3, text: 'Check mail', timer: 'blabla'},
         ],
     }
 
