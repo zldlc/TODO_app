@@ -3,37 +3,19 @@ import React, { Component } from 'react';
 import './Task.css';
 
 class Task extends Component {
-
-    state = {
-        status: null,
-    }
-
-    changeDoneStatus = () => {
-        this.setState((state) => {
-            if (state.status === null) {
-                return {
-                    status: 'completed',
-                }
-            }
-
-            return {
-                status: null,
-            }
-        });
-    }
-    
     render() {
-        const {text, timer, onDeleted} = this.props;
-        const {status} = this.state;
+        const {text, timer, completed, onDeleted, onDone} = this.props;
         
-        const editInput = status === 'editing' ?
-            <input type="text" className="edit" value="Editing task"/> :
-            null;
+        // const editInput = status === 'editing' ?
+        //     <input type="text" className="edit" value="Editing task"/> :
+        //     null;
+
+        const doneTask = completed === true ? 'completed' : null;
 
         return (
-            <li className={status}>
+            <li className={doneTask}>
                 <div className="view">
-                    <input className="toggle" type="checkbox" onClick={() => this.changeDoneStatus()}/>
+                    <input className="toggle" type="checkbox" onClick={onDone}/>
                     <label>
                         <span className="description">{text}</span>
                         <span className="created">{timer}</span>
@@ -41,7 +23,7 @@ class Task extends Component {
                     <button className="icon icon-edit"></button>
                     <button className="icon icon-destroy" onClick={onDeleted}></button>
                 </div>
-                {editInput}
+                {/* {editInput} */}
             </li>
         );
     }

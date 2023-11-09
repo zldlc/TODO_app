@@ -5,12 +5,12 @@ import './TaskList.css';
 
 class TaskList extends Component {
     render() {
-        const {tasks, onDeleted} = this.props;
+        const {tasks, onDeleted, onDone} = this.props;
 
         const todo = tasks.map(task => {
             const {id, ...itemProps} = task;
 
-            return <Task key={id} {...itemProps} onDeleted={() => onDeleted(id)}/>
+            return <Task key={id} {...itemProps} onDeleted={() => onDeleted(id)} onDone={() => onDone(id)}/>
         });
 
         return (

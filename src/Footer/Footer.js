@@ -5,11 +5,14 @@ import './Footer.css';
 
 class Footer extends Component {
     render() {
+        const {clearCompletedTask, onActiveFilter, onCompletedFilter, onAllFilter, tasks} = this.props;
+        const activeTasksCount = tasks.filter(task => task.completed === false);
+
         return (
             <footer className="footer">
-                <span className="todo-count">1 items left</span>
-                <TasksFilter/>
-                <button className="clear-completed">Clear completed</button>
+                <span className="todo-count">{activeTasksCount.length} task left</span>
+                <TasksFilter onActiveFilter={onActiveFilter} onCompletedFilter={onCompletedFilter} onAllFilter={onAllFilter}/>
+                <button className="clear-completed" onClick={clearCompletedTask}>Clear completed</button>
             </footer>
         );
     }
