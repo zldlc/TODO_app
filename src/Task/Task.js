@@ -1,29 +1,68 @@
 import React, { Component } from 'react';
+import { formatDistanceToNow } from 'date-fns';
+import PropTypes from 'prop-types';
 
 import './Task.css';
 
 class Task extends Component {
-    render() {
-        const {text, timer, completed, onDeleted, onDone} = this.props;
-        
-        // const editInput = status === 'editing' ?
-        //     <input type="text" className="edit" value="Editing task"/> :
-        //     null;
+    static defaultProps = {
+        text: 'Anonymous task',
+        timer: Date.now(),
+        completed: false,
+        editing: false,
+        deleteTask: () => {},
+        changeDoneStatus: () => {},
+        changeEditingStatus: () => {},
+        editTask: () => {},
+    }
 
-        const doneTask = completed === true ? 'completed' : null;
+    static propTypes = {
+        text: PropTypes.string,
+        timer: PropTypes.number,
+        completed: PropTypes.bool,
+        editing: PropTypes.bool,
+        deleteTask: PropTypes.func,
+        changeDoneStatus: PropTypes.func,
+        changeEditingStatus: PropTypes.func,
+        editTask: PropTypes.func,
+    }
+
+    state = {
+        editingTaskText: this.props.text,
+    }
+
+    editTaskText = (e) => {
+        this.setState({
+            editingTaskText: e.target.value,
+        });
+    }
+
+    render() {
+        const {text, timer, completed, editing, deleteTask, changeDoneStatus, changeEditingStatus, editTask} = this.props;
+        const {editingTaskText} = this.state;
+
+        const taskTimer = formatDistanceToNow(new Date(timer), {includeSeconds: true});
+        const isCompletedClass = completed === true ? 'completed' : '';
+        const isEditingClass = editing === true ? ' editing' : '';
 
         return (
-            <li className={doneTask}>
+            <li className={isCompletedClass + isEditingClass}>
                 <div className="view">
-                    <input className="toggle" type="checkbox" onClick={onDone}/>
+                    <input className="toggle" type="checkbox" onClick={changeDoneStatus}/>
                     <label>
                         <span className="description">{text}</span>
-                        <span className="created">{timer}</span>
+                        <span className="created">{taskTimer}</span>
                     </label>
-                    <button className="icon icon-edit"></button>
-                    <button className="icon icon-destroy" onClick={onDeleted}></button>
+                    <button className="icon icon-edit" onClick={changeEditingStatus}></button>
+                    <button className="icon icon-destroy" onClick={deleteTask}></button>
                 </div>
-                {/* {editInput} */}
+                <form onSubmit={(e) => {
+                                e.preventDefault();
+                                editTask(editingTaskText);
+                            }}>
+                    <input type="text" className="edit" value={editingTaskText} onChange={this.editTaskText}/>
+                </form>
+                
             </li>
         );
     }

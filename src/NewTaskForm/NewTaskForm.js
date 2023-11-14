@@ -1,35 +1,48 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import './NewTaskForm.css';
 
 class NewTaskForm extends Component {
-    state = {
-        value: '',
+    static defaultProps = {
+        onSubmit: () => {},
     }
 
-    changeStateValue = (e) => {
+    static propTypes = {
+        onSubmit: PropTypes.func,
+    }
+
+    state = {
+        inputValue: '',
+    }
+
+    changeStateInputValue = (e) => {
         this.setState({
-            value: e.target.value,
+            inputValue: e.target.value,
         });
     }
 
     clearInput = () => {
         this.setState({
-            value: '',
+            inputValue: '',
         });
     }
 
     render() {
         const {onSubmit} = this.props;
+        const {inputValue} = this.state;
 
         return (
             <form onSubmit={(e) => {
                     e.preventDefault();
-                    onSubmit(this.state.value);
+                    if (inputValue.trim()) {
+                        onSubmit(inputValue);
+                    }
+                    
                     this.clearInput();
                 }
             }>
-                <input className="new-todo" placeholder="What needs to be done?" value={this.state.value} autoFocus onChange={this.changeStateValue} />
+                <input className="new-todo" placeholder="What needs to be done?" value={inputValue} autoFocus onChange={this.changeStateInputValue}/>
             </form>
         );
     }

@@ -9,12 +9,11 @@ import Footer from './Footer/Footer';
 class App extends Component {
     state = {
         tasks: [
-            {id: 1, text: 'Drink coffee', timer: 'blabla', completed: false},
-            {id: 2, text: 'Finish code', timer: 'blabla', completed: false},
-            {id: 3, text: 'Check mail', timer: 'blabla', completed: false},
+            {id: 1, text: 'Drink coffee', timer: Date.now(), completed: false, editing: false},
+            {id: 2, text: 'Finish code', timer: Date.now(), completed: false, editing: false}, 
+            {id: 3, text: 'Check mail', timer: Date.now(), completed: false, editing: false},
         ],
-        inputValue: '',
-        filter: 'all',
+        filterName: 'all',
     }
 
     deleteTask = (id) => {
@@ -36,10 +35,24 @@ class App extends Component {
             copyStateArr.push({
                 id: randomId,
                 text: taskText,
-                timer: 'blabla',
+                timer: Date.now(),
                 completed: false,
+                editing: false,
             });
 
+            return {
+                tasks: copyStateArr,
+            }
+        });
+    }
+    
+    editTask = (id, newText) => {
+        this.setState(({tasks}) => {
+            const index = tasks.findIndex((el) => el.id === id);
+            const copyStateArr = structuredClone(tasks);
+
+            copyStateArr[index].text = newText;
+            copyStateArr[index].editing = false;
             return {
                 tasks: copyStateArr,
             }
@@ -59,10 +72,23 @@ class App extends Component {
         });
     }
 
+    changeEditingStatus = (id) => {
+        this.setState(({tasks}) => {
+            const copyStateArr = structuredClone(tasks);
+            const index = copyStateArr.findIndex((el) => el.id === id);
+            
+            copyStateArr[index].editing = true;
+
+            return {
+                tasks: copyStateArr,
+            }
+        });
+    }
+
     changeNameFilter = (filterName) => {
         this.setState(() => {
             return {
-                filter: filterName,
+                filterName,
             }
         });
     }
@@ -78,10 +104,10 @@ class App extends Component {
     }
 
     render() {
-        const {tasks, filter} = this.state;
+        const {tasks, filterName} = this.state;
         let filteredTasks;
 
-        switch (filter) {
+        switch (filterName) {
             case 'all':
                 filteredTasks = tasks;
                 break; 
@@ -102,12 +128,14 @@ class App extends Component {
                     <NewTaskForm onSubmit={(taskText) => this.addNewTask(taskText)}/>
                 </header>
                 <section className="main">
-                    <TaskList tasks={filteredTasks} onDeleted={(id) => this.deleteTask(id)} onDone={(id) => this.changeDoneStatus(id)}/>
+                    <TaskList tasks={filteredTasks}
+                            deleteTask={(id) => this.deleteTask(id)}
+                            changeDoneStatus={(id) => this.changeDoneStatus(id)}
+                            changeEditingStatus={(id) => this.changeEditingStatus(id)}
+                            editTask={(id, newText) => this.editTask(id, newText)}/>
                     <Footer tasks={tasks}
                             clearCompletedTask={this.clearCompletedTask}
-                            onAllFilter={() => this.changeNameFilter('all')}
-                            onActiveFilter={() => this.changeNameFilter('active')}
-                            onCompletedFilter={() => this.changeNameFilter('completed')}/>
+                            changeFilter={(activeFilterName) => this.changeNameFilter(activeFilterName)}/>
                 </section>
             </section>
         );
@@ -116,3 +144,4 @@ class App extends Component {
 
 const root = ReactDOM.createRoot(document.querySelector('.root'));
 root.render(<App/>);
+
