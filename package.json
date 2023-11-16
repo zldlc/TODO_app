@@ -58,6 +58,6 @@
     "prettier": "^3.1.0"
   },
   "lint-staged": {    
-   "*.(js|jsx|css)": ["npm run lint:write", "git add"]  
+   "*.(js|jsx|css)": ["prettier --write"]  
   }
 }
