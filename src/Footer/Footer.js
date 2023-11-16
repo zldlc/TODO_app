@@ -19,7 +19,6 @@ class Footer extends Component {
   render() {
     const { clearCompletedTask, tasks, changeFilter } = this.props;
     const activeTasksCounter = tasks.filter((task) => task.completed === false);
-    console.log('abg');
 
     return (
       <footer className="footer">
