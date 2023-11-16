@@ -58,6 +58,6 @@
     "prettier": "^3.1.0"
   },
   "lint-staged": {    
-   "*.(js|jsx|css)": ["prettier --write"]  
+   "*.(js|jsx|css)": ["eslint --debug", "eslint --debug --fix", "prettier --write" ]  
   }
 }
