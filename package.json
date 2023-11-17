@@ -19,9 +19,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --debug src/",
-    "lint:fix": "eslint --debug src/ --fix",
-    "format": "prettier --write src/"
+    "lint": "eslint --debug src/**/*.jsx",
+    "lint:fix": "eslint --debug src/**/*.jsx --fix",
+    "format": "prettier --write src/**/*.jsx"
   },
   "eslintConfig": {
     "extends": [
