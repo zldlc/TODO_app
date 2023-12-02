@@ -48,7 +48,7 @@ class Task extends Component {
     return (
       <li className={isCompletedClass + isEditingClass}>
         <div className="view">
-          <input className="toggle" type="checkbox" onClick={changeDoneStatus} />
+          <input className="toggle" type="checkbox" onClick={changeDoneStatus} checked={completed} />
           <label>
             <span className="description">{text}</span>
             <span className="created">{taskTimer}</span>
