@@ -102,7 +102,7 @@
 
 .todo-list li .icon {
   position: absolute;
-  top: 0;
+  top: 26px;
   bottom: -3px;
   width: 30px;
   height: 40px;
@@ -140,6 +140,46 @@
 
 .todo-list li.editing:last-child {
   margin-bottom: -1px;
+}
+
+.todo-list li label .description {
+	font-size: 13px;
+	color: gray;
+}
+
+.todo-list li label .title {
+	font-size: 24px;
+}
+
+.todo-list li .icon-pause,
+.todo-list li .icon-play {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.todo-list li .icon-play {
+	font-size: 15px;
+  position: absolute;
+  left: 35px;
+}
+
+.todo-list li .icon-pause {
+	font-size: 15px;
+  position: absolute;
+  left: 55px;
+}
+
+.control-timer {
+  position: relative;
+}
+
+.icon-pause:after {
+	content: '⏸';
+}
+
+.icon-play:after {
+	content: '▶';
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {

@@ -14,6 +14,8 @@ class NewTaskForm extends Component {
 
   state = {
     inputValue: '',
+    minutesInputValue: '',
+    secondsInputValue: '',
   };
 
   changeStateInputValue = (e) => {
@@ -22,22 +24,50 @@ class NewTaskForm extends Component {
     });
   };
 
+  changeStateMinutesInputValue = (e) => {
+    this.setState({
+      minutesInputValue: e.target.value,
+    });
+  };
+
+  changeStateSecondsInputValue = (e) => {
+    this.setState({
+      secondsInputValue: e.target.value,
+    });
+  };
+
   clearInput = () => {
     this.setState({
       inputValue: '',
+      minutesInputValue: '',
+      secondsInputValue: '',
     });
+  };
+
+  onSubmit = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (this.state.inputValue.trim()) {
+        this.props.onSubmit(
+          this.state.inputValue,
+          +this.state.minutesInputValue * 60000 + +this.state.secondsInputValue * 1000
+        );
+      }
+      this.clearInput();
+    }
   };
 
   render() {
     const { onSubmit } = this.props;
-    const { inputValue } = this.state;
+    const { inputValue, secondsInputValue, minutesInputValue } = this.state;
 
     return (
       <form
+        className="new-todo-form"
         onSubmit={(e) => {
           e.preventDefault();
           if (inputValue.trim()) {
-            onSubmit(inputValue);
+            onSubmit(inputValue, +minutesInputValue * 60000 + +secondsInputValue * 1000);
           }
 
           this.clearInput();
@@ -49,6 +79,21 @@ class NewTaskForm extends Component {
           value={inputValue}
           autoFocus
           onChange={this.changeStateInputValue}
+          onKeyDown={this.onSubmit}
+        />
+        <input
+          className="new-todo-form__timer"
+          placeholder="Min"
+          value={minutesInputValue}
+          onChange={this.changeStateMinutesInputValue}
+          onKeyDown={this.onSubmit}
+        />
+        <input
+          className="new-todo-form__timer"
+          placeholder="Sec"
+          value={secondsInputValue}
+          onChange={this.changeStateSecondsInputValue}
+          onKeyDown={this.onSubmit}
         />
       </form>
     );

@@ -9,11 +9,55 @@ import Footer from './Footer/Footer';
 class App extends Component {
   state = {
     tasks: [
-      { id: 1, text: 'Drink coffee', timer: Date.now(), completed: false, editing: false },
-      { id: 2, text: 'Finish code', timer: Date.now(), completed: false, editing: false },
-      { id: 3, text: 'Check mail', timer: Date.now(), completed: false, editing: false },
+      {
+        id: 1,
+        text: 'Drink coffee',
+        timer: Date.now(),
+        completed: false,
+        editing: false,
+        time: 10000,
+        isRunning: true,
+      },
+      {
+        id: 2,
+        text: 'Finish code',
+        timer: Date.now(),
+        completed: false,
+        editing: false,
+        time: 10000,
+        isRunning: true,
+      },
+      {
+        id: 3,
+        text: 'Check mail',
+        timer: Date.now(),
+        completed: false,
+        editing: false,
+        time: 10000,
+        isRunning: true,
+      },
     ],
     filterName: 'all',
+  };
+
+  timerTick = (id) => {
+    this.setState(({ tasks }) => ({
+      tasks: tasks.map((task) =>
+        task.id === id && task.time > 0 && task.isRunning ? { ...task, time: task.time - 1000 } : task
+      ),
+    }));
+  };
+
+  onStopTimer = (id) => {
+    this.setState(({ tasks }) => ({
+      tasks: tasks.map((task) => (task.id === id ? { ...task, isRunning: false } : task)),
+    }));
+  };
+
+  onStartTimer = (id) => {
+    this.setState(({ tasks }) => ({
+      tasks: tasks.map((task) => (task.id === id ? { ...task, isRunning: true } : task)),
+    }));
   };
 
   deleteTask = (id) => {
@@ -27,7 +71,7 @@ class App extends Component {
     });
   };
 
-  addNewTask = (taskText) => {
+  addNewTask = (taskText, time) => {
     this.setState(({ tasks }) => {
       const copyStateArr = structuredClone(tasks);
       const randomId = Math.random().toString(36).slice(2);
@@ -38,6 +82,8 @@ class App extends Component {
         timer: Date.now(),
         completed: false,
         editing: false,
+        time: time,
+        isRunning: true,
       });
 
       return {
@@ -125,10 +171,13 @@ class App extends Component {
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <NewTaskForm onSubmit={(taskText) => this.addNewTask(taskText)} />
+          <NewTaskForm onSubmit={(taskText, time) => this.addNewTask(taskText, time)} />
         </header>
         <section className="main">
           <TaskList
+            timerTick={this.timerTick}
+            onStopTimer={this.onStopTimer}
+            onStartTimer={this.onStartTimer}
             tasks={filteredTasks}
             deleteTask={(id) => this.deleteTask(id)}
             changeDoneStatus={(id) => this.changeDoneStatus(id)}

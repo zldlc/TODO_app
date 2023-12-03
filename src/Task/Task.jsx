@@ -37,21 +37,39 @@ class Task extends Component {
     });
   };
 
+  componentDidMount() {
+    this.timerID = setInterval(() => this.props.timerTick(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
+
   render() {
-    const { text, timer, completed, editing, deleteTask, changeDoneStatus, changeEditingStatus, editTask } = this.props;
+    const { text, timer, completed, editing, deleteTask, changeDoneStatus, changeEditingStatus, editTask, time } =
+      this.props;
     const { editingTaskText } = this.state;
 
     const taskTimer = formatDistanceToNow(new Date(timer), { includeSeconds: true });
     const isCompletedClass = completed === true ? 'completed' : '';
     const isEditingClass = editing === true ? ' editing' : '';
+    const minutes = Math.floor(time / 1000 / 60);
+    const seconds = (time / 1000) % 60;
 
     return (
       <li className={isCompletedClass + isEditingClass}>
         <div className="view">
-          <input className="toggle" type="checkbox" onClick={changeDoneStatus} checked={completed} />
+          <input className="toggle" type="checkbox" onChange={changeDoneStatus} checked={completed} />
           <label>
-            <span className="description">{text}</span>
-            <span className="created">{taskTimer}</span>
+            <span className="description title">{text}</span>
+            <span className="description control-timer">
+              <button className="icon icon-play" onClick={this.props.onStartTimer}></button>
+              <button className="icon icon-pause" onClick={this.props.onStopTimer}></button>
+              <span>
+                {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+              </span>
+            </span>
+            <span className="description">{taskTimer}</span>
           </label>
           <button className="icon icon-edit" onClick={changeEditingStatus}></button>
           <button className="icon icon-destroy" onClick={deleteTask}></button>

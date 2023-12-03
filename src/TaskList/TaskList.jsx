@@ -21,7 +21,8 @@ class TaskList extends Component {
   };
 
   render() {
-    const { tasks, deleteTask, changeDoneStatus, changeEditingStatus, editTask } = this.props;
+    const { tasks, deleteTask, changeDoneStatus, changeEditingStatus, editTask, onStartTimer, onStopTimer, timerTick } =
+      this.props;
 
     const todo = tasks.map((task) => {
       const { id, ...itemProps } = task;
@@ -34,6 +35,9 @@ class TaskList extends Component {
           changeDoneStatus={() => changeDoneStatus(id)}
           changeEditingStatus={() => changeEditingStatus(id)}
           editTask={(taskText) => editTask(id, taskText)}
+          onStopTimer={() => onStopTimer(id)}
+          onStartTimer={() => onStartTimer(id)}
+          timerTick={() => timerTick(id)}
         />
       );
     });
