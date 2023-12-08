@@ -161,11 +161,12 @@
 .todo-list li .icon-play {
 	font-size: 15px;
   position: absolute;
-  left: 35px;
+  left: 38px;
 }
 
 .todo-list li .icon-pause {
-	font-size: 15px;
+	font-size: 18px;
+  font-weight: 600;
   position: absolute;
   left: 55px;
 }
@@ -175,7 +176,7 @@
 }
 
 .icon-pause:after {
-	content: '⏸';
+	content: 'II';
 }
 
 .icon-play:after {
