@@ -102,7 +102,6 @@ const App = () => {
     setTodoData((prevState) => {
       const copyStateArr = structuredClone(prevState);
       const index = copyStateArr.findIndex((el) => el.id === id);
-
       copyStateArr[index].editing = true;
 
       return copyStateArr;
